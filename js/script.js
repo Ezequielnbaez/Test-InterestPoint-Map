@@ -116,7 +116,9 @@ require(["esri/config",
   view.popup.autoCloseEnabled = true;
   view.ui.add(search, "top-right");
   view.ui.add(document.getElementById("form"), "top-right");
-
+  view.on("click", function(event) {
+    document.getElementById("point-coord").value = event.mapPoint.latitude.toFixed(7) + "," + event.mapPoint.longitude.toFixed(8);
+  });
   //BOTONES
   addBtn.addEventListener("click", addFeatures);
   removeBtn.addEventListener("click", removeFeatures);
@@ -156,8 +158,7 @@ require(["esri/config",
       };
 
       applyEditsToLayer(addEdits);
-    }
-    else {
+    } else {
       view.popup.open({
         title: "Error",
         location: view.center.clone(),
