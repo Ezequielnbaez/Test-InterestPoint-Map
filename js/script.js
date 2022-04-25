@@ -17,7 +17,7 @@ require(["esri/config",
   Search
 ) => {
   esriConfig.apiKey = "AAPK32a3586bfe614d9e9dc2d056e55d87c7OV1rdwssX3LTqWQ__TXswsIe7IGkDBvGPqGH-qZzZipdTmm0ES-mR8lSRVWWsraf";
-//DECLARACIÓN DE CONSTANTES
+  //DECLARACIÓN DE CONSTANTES
   const map = new Map({
     basemap: "dark-gray-vector"
   });
@@ -112,11 +112,11 @@ require(["esri/config",
     view: view
   });
 
-//INTERACCIÓN CON VIEW
+  //INTERACCIÓN CON VIEW
   view.ui.add(search, "top-right");
   view.ui.add(document.getElementById("form"), "top-right");
 
-//BOTONES
+  //BOTONES
   addBtn.addEventListener("click", addFeatures);
   removeBtn.addEventListener("click", removeFeatures);
   form.addEventListener('submit', (event) => {
@@ -126,11 +126,70 @@ require(["esri/config",
   });
 
   //FUNCIONES
-  function addFeatures(formElements){
-    console.log(formElements);
+  function addFeatures(formElements) {
+
+    let coordlist = form.elements["point-coord"].value.split(",");
+    const data = [{
+      CAT: form.elements["point-category"].value,
+      NOMBRE: form.elements["point-name"].value,
+      X: parseFloat(coordlist[0]).toFixed(5),
+      Y: parseFloat(coordlist[1]).toFixed(5),
+      TEL: form.elements["point-tel"].value,
+      DIR: form.elements["point-dir"].value
+    }];
+
+    var graphics = [];
+    var graphic;
+    graphic = new Graphic({
+      geometry: {
+        type: "point",
+        latitude: data[0].X,
+        longitude: data[0].Y
+      },
+      attributes: data[0]
+    });
+    graphics.push(graphic);
+    const addEdits = {
+      addFeatures: graphics
+    };
+
+    applyEditsToLayer(addEdits);
   }
-  function removeFeatures(formElements){
-    console.log(formElements);
+
+  function removeFeatures(selectedFeature) {
+    console.log(selectedFeature);
+    myLayer.queryFeatures().then((results) => {
+      const deleteEdits = {
+        deleteFeatures: results.features
+      };
+      applyEditsToLayer(deleteEdits);
+    });
+  }
+
+
+  function applyEditsToLayer(edits) {
+    myLayer
+      .applyEdits(edits)
+      .then((results) => {
+        if (results.addFeatureResults.length > 0) {
+          var objectIds = [];
+          results.addFeatureResults.forEach((item) => {
+            objectIds.push(item.objectId);
+          });
+          myLayer
+            .queryFeatures({
+              objectIds: objectIds
+            })
+            .then((results) => {
+              console.log(
+                results.features.length,
+              );
+            })
+        }
+      })
+      .catch((error) => {
+        console.error();
+      });
   }
 
 });
