@@ -113,6 +113,7 @@ require(["esri/config",
   });
 
   //INTERACCIÓN CON VIEW
+  view.popup.autoCloseEnabled = true;
   view.ui.add(search, "top-right");
   view.ui.add(document.getElementById("form"), "top-right");
 
@@ -129,32 +130,42 @@ require(["esri/config",
   function addFeatures(formElements) {
 
     let coordlist = form.elements["point-coord"].value.split(",");
-    const data = [{
-      CAT: form.elements["point-category"].value,
-      NOMBRE: form.elements["point-name"].value,
-      X: parseFloat(coordlist[0]).toFixed(5),
-      Y: parseFloat(coordlist[1]).toFixed(5),
-      TEL: form.elements["point-tel"].value,
-      DIR: form.elements["point-dir"].value
-    }];
+    if ((parseFloat(coordlist[0]).toFixed(5) < 180 && parseFloat(coordlist[0]).toFixed(5) > -180) && (parseFloat(coordlist[1]).toFixed(5) <= 90 && parseFloat(coordlist[1]).toFixed(5) >= -90)) {
+      const data = [{
+        CAT: form.elements["point-category"].value,
+        NOMBRE: form.elements["point-name"].value,
+        X: parseFloat(coordlist[0]).toFixed(5),
+        Y: parseFloat(coordlist[1]).toFixed(5),
+        TEL: form.elements["point-tel"].value,
+        DIR: form.elements["point-dir"].value
+      }];
 
-    var graphics = [];
-    var graphic;
-    graphic = new Graphic({
-      geometry: {
-        type: "point",
-        latitude: data[0].X,
-        longitude: data[0].Y
-      },
-      attributes: data[0]
-    });
-    graphics.push(graphic);
-    const addEdits = {
-      addFeatures: graphics
-    };
+      var graphics = [];
+      var graphic;
+      graphic = new Graphic({
+        geometry: {
+          type: "point",
+          latitude: data[0].X,
+          longitude: data[0].Y
+        },
+        attributes: data[0]
+      });
+      graphics.push(graphic);
+      const addEdits = {
+        addFeatures: graphics
+      };
 
-    applyEditsToLayer(addEdits);
+      applyEditsToLayer(addEdits);
+    }
+    else {
+      view.popup.open({
+        title: "Error",
+        location: view.center.clone(),
+        content: "Coordenadas inválidas"
+      });
+    }
   }
+
 
   function removeFeatures(selectedFeature) {
     console.log(selectedFeature);
