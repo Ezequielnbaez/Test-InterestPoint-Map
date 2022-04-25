@@ -17,6 +17,7 @@ require(["esri/config",
   Search
 ) => {
   esriConfig.apiKey = "AAPK32a3586bfe614d9e9dc2d056e55d87c7OV1rdwssX3LTqWQ__TXswsIe7IGkDBvGPqGH-qZzZipdTmm0ES-mR8lSRVWWsraf";
+//DECLARACIÓN DE CONSTANTES
   const map = new Map({
     basemap: "dark-gray-vector"
   });
@@ -92,7 +93,7 @@ require(["esri/config",
       symbol: {
         type: "web-style",
         styleName: "Esri2DPointSymbolsStyle",
-        name: "flag"
+        name: "landmark"
       }
     },
     popupTemplate: {
@@ -111,8 +112,25 @@ require(["esri/config",
     view: view
   });
 
+//INTERACCIÓN CON VIEW
   view.ui.add(search, "top-right");
-
   view.ui.add(document.getElementById("form"), "top-right");
+
+//BOTONES
+  addBtn.addEventListener("click", addFeatures);
+  removeBtn.addEventListener("click", removeFeatures);
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    addFeatures(form.elements);
+  });
+
+  //FUNCIONES
+  function addFeatures(formElements){
+    console.log(formElements);
+  }
+  function removeFeatures(formElements){
+    console.log(formElements);
+  }
 
 });
