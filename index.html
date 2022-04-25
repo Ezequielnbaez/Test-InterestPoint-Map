@@ -4,10 +4,15 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
   <title>Test</title>
+  <link rel="stylesheet" href="https://js.arcgis.com/4.23/esri/themes/light/main.css" />
+  <link rel="stylesheet" type="text/css" href="css/style.css" />
+  <script src="https://js.arcgis.com/4.23/"></script>
+  <script src="js/script.js"></script>
 </head>
 
 <body>
-  <form id="form">
+  <div id="viewDiv"></div>
+  <form id="form" class="esri-widget">
     <div class="form-label">
       <div class="col-25">
         <label for="point-name">Nombre</label>
@@ -59,9 +64,9 @@
     </div>
 
     <div class="form-label">
-      <button  id="add">Agregar punto de interés</button>
+      <button class="esri-button" id="add">Agregar punto de interés</button>
   </form>
-  <button  id="remove">Borrar</button>
+  <button class="esri-button" id="remove">Borrar</button>
 
 
 </body>

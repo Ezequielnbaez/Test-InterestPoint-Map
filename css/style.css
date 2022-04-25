@@ -1,0 +1,22 @@
+html,
+body,
+#viewDiv {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+}
+
+#add {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+#form {
+  width: 100%;
+  padding: 5px;
+}
+
+#point-category {
+  width: 75%
+}
