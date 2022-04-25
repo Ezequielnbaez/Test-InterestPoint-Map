@@ -107,6 +107,11 @@ require(["esri/config",
   const addBtn = document.getElementById("add");
   const form = document.getElementById('form');
   const removeBtn = document.getElementById("remove");
+  const search = new Search({
+    view: view
+  });
+
+  view.ui.add(search, "top-right");
 
   view.ui.add(document.getElementById("form"), "top-right");
 
